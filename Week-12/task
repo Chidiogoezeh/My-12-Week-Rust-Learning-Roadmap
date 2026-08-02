@@ -1,0 +1,42 @@
+# Week 12 – Final Production Project
+
+Build a complete **Task Management API**.
+
+Features:
+
+### Authentication
+
+- Register
+- Login
+- JWT
+
+### Users
+
+- Profile
+- Update profile
+
+### Tasks
+
+- Create
+- Update
+- Delete
+- Complete
+- Due date
+
+### Database
+
+PostgreSQL
+
+### Security
+
+- Password hashing
+- JWT authentication
+- Validation
+
+### Logging
+
+Using `tracing`
+
+### Deployment
+
+Deploy to a cloud platform like Fly.io, Railway, or Render.

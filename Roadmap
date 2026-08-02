@@ -1,0 +1,99 @@
+By the end of these 12 weeks, I will be able to build and deploy a production-style backend using rust programming language with:
+
+- ✅ REST APIs
+- ✅ Authentication (JWT)
+- ✅ PostgreSQL
+- ✅ SQLx
+- ✅ Docker
+- ✅ Logging
+- ✅ Validation
+- ✅ Testing
+- ✅ Deployment
+
+---
+
+# Technology Stack
+
+Here are the stack I will learn to build around:
+
+| Purpose               | Technology                 |
+| --------------------- | -------------------------- |
+| Language              | Rust                       |
+| Async Runtime         | Tokio                      |
+| Web Framework         | Axum                       |
+| Serialization         | Serde                      |
+| Database              | PostgreSQL                 |
+| ORM/Database Layer    | SQLx                       |
+| Authentication        | JWT                        |
+| Password Hashing      | Argon2                     |
+| Environment Variables | dotenvy                    |
+| Logging               | tracing                    |
+| Validation            | validator                  |
+| Testing               | cargo test                 |
+| Containerization      | Docker                     |
+| Deployment            | Fly.io, Railway, or Render |
+
+# Extra Features
+
+Next, I wil gradually add:
+
+- Pagination
+- Search
+- Refresh Tokens
+- Email Verification
+- Password Reset
+- File Uploads
+- Role-Based Access Control (Admin/User)
+- Rate Limiting
+- OpenAPI/Swagger documentation
+- Redis caching
+
+---
+
+# GitHub Portfolio Projects
+
+By the end of the roadmap, I aim to have these repositories through active learning:
+
+1. **Rust Calculator CLI** – fundamentals.
+2. **Student Management CLI** – structs, enums, traits.
+3. **Expense Tracker CLI** – collections and error handling.
+4. **Concurrent URL Fetcher** – async with Tokio.
+5. **User API** – first REST API with Axum.
+6. **Todo API** – PostgreSQL + SQLx.
+7. **Authentication Service** – JWT and Argon2.
+8. **Production Task Manager API** – full backend with Docker and deployment.
+
+Each project shall include:
+
+- A clear `README.md` with setup instructions.
+- Environment variable examples (`.env.example`).
+- Database migration scripts (where applicable).
+- API documentation (Markdown or OpenAPI).
+- Unit and integration tests for key functionality.
+
+---
+
+## Recommended learning resources
+
+- [The Rust Programming Language (The Book)](https://doc.rust-lang.org/book/?utm_source=chatgpt.com) — the official Rust book and the best place to learn the language.
+- [Rust by Example](https://doc.rust-lang.org/rust-by-example/?utm_source=chatgpt.com) — learn by working through short examples.
+- [Axum Documentation](https://docs.rs/axum/latest/axum/?utm_source=chatgpt.com) — the official guide for the web framework you'll use.
+- [Tokio Documentation](https://tokio.rs/?utm_source=chatgpt.com) — learn asynchronous programming.
+- [SQLx Documentation](https://github.com/launchbadge/sqlx?utm_source=chatgpt.com) — compile-time checked SQL queries.
+- [The Rust API Guidelines](https://rust-lang.github.io/api-guidelines/?utm_source=chatgpt.com) — conventions for writing idiomatic Rust libraries.
+
+### A capstone project idea
+
+Having previously worked on an event management and ticketing system design, a great capstone would be to implement it in Rust. I will attempt to build an **Event Management API** with:
+
+- User registration and login
+- Event creation and management
+- Ticket booking
+- QR-code ticket generation
+- PostgreSQL persistence
+- JWT authentication
+- Email notifications
+- Dockerized deployment
+- CI with GitHub Actions
+
+That project will at the end, not only showcase Rust proficiency but also backend architecture, authentication, database design, and deployment—making

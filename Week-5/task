@@ -1,0 +1,26 @@
+# Week 5 – Async Programming
+
+Topics:
+
+- Futures
+- Async
+- Await
+- Tokio
+- Tasks
+
+Example:
+
+```rust
+#[tokio::main]
+async fn main() {
+    println!("Hello Async");
+}
+```
+
+### Project
+
+Build a concurrent URL fetcher that:
+
+- Reads URLs
+- Fetches multiple pages simultaneously
+- Prints response times
