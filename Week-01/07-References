@@ -1,4 +1,4 @@
-Absolutely. **References are one of the most important Rust concepts** because they are the foundation for understanding **borrowing and ownership**.
+**References are one of the most important Rust concepts** because they are the foundation for understanding **borrowing and ownership**.
 
 # Rust References — What You Need to Know
 
