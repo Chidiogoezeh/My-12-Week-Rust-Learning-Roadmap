@@ -1,0 +1,1080 @@
+`Struct` is one of the most important Rust concepts to master because backend applications constantly model real-world data with structs: users, products, orders, events, tickets, database records, API requests, and responses.
+
+# 1. What is a Struct?
+
+A **struct** (structure) is a custom data type that lets you group related pieces of data together under meaningful names.
+
+For example, a user has:
+
+- an ID
+- a name
+- an email
+- an age
+
+Instead of keeping these as unrelated variables:
+
+```rust
+let id = 1;
+let name = String::from("John");
+let email = String::from("john@example.com");
+let age = 25;
+```
+
+you can create a `User` struct:
+
+```rust
+struct User {
+    id: u32,
+    name: String,
+    email: String,
+    age: u8,
+}
+```
+
+Then create a user:
+
+```rust
+let user = User {
+    id: 1,
+    name: String::from("John"),
+    email: String::from("john@example.com"),
+    age: 25,
+};
+```
+
+Now all of the information belonging to that user is grouped together.
+
+---
+
+# 2. Struct Syntax
+
+The basic syntax is:
+
+```rust
+struct StructName {
+    field_name: DataType,
+    field_name: DataType,
+}
+```
+
+For example:
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+    email: String,
+}
+```
+
+Then:
+
+```rust
+let user = User {
+    id: 1,
+    username: String::from("daud"),
+    email: String::from("daud@example.com"),
+};
+```
+
+Think of it like this:
+
+```text
+User
+│
+├── id       → 1
+├── username → "daud"
+└── email    → "daud@example.com"
+```
+
+---
+
+# 3. Accessing Struct Fields
+
+Use the `.` operator.
+
+```rust
+println!("{}", user.id);
+println!("{}", user.username);
+println!("{}", user.email);
+```
+
+Complete example:
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+    email: String,
+}
+
+fn main() {
+    let user = User {
+        id: 1,
+        username: String::from("daud"),
+        email: String::from("daud@example.com"),
+    };
+
+    println!("ID: {}", user.id);
+    println!("Username: {}", user.username);
+    println!("Email: {}", user.email);
+}
+```
+
+Output:
+
+```text
+ID: 1
+Username: daud
+Email: daud@example.com
+```
+
+---
+
+# 4. Struct Fields Can Have Different Types
+
+This is one of the main reasons structs are useful.
+
+```rust
+struct Product {
+    id: u32,
+    name: String,
+    price: f64,
+    in_stock: bool,
+}
+```
+
+Here:
+
+```text
+id        → u32
+name      → String
+price     → f64
+in_stock  → bool
+```
+
+Create one:
+
+```rust
+let product = Product {
+    id: 101,
+    name: String::from("Laptop"),
+    price: 1200.50,
+    in_stock: true,
+};
+```
+
+---
+
+# 5. Mutable Structs
+
+By default, you cannot modify a struct's fields.
+
+This won't work:
+
+```rust
+let user = User {
+    id: 1,
+    username: String::from("daud"),
+};
+
+user.username = String::from("admin");
+```
+
+You need to make the entire struct mutable:
+
+```rust
+let mut user = User {
+    id: 1,
+    username: String::from("daud"),
+};
+
+user.username = String::from("admin");
+
+println!("{}", user.username);
+```
+
+Output:
+
+```text
+admin
+```
+
+Important:
+
+```rust
+let mut user
+```
+
+not:
+
+```rust
+let user
+```
+
+---
+
+# 6. Structs and Functions
+
+This is extremely important for backend programming.
+
+You can pass structs to functions.
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+}
+
+fn print_user(user: &User) {
+    println!("ID: {}", user.id);
+    println!("Username: {}", user.username);
+}
+
+fn main() {
+    let user = User {
+        id: 1,
+        username: String::from("daud"),
+    };
+
+    print_user(&user);
+}
+```
+
+Notice:
+
+```rust
+&user
+```
+
+and:
+
+```rust
+user: &User
+```
+
+We're borrowing the user instead of transferring ownership.
+
+This connects directly to the **ownership and borrowing** concepts you learned earlier.
+
+---
+
+# 7. Structs and Ownership
+
+Consider:
+
+```rust
+struct User {
+    username: String,
+}
+```
+
+Then:
+
+```rust
+let user = User {
+    username: String::from("daud"),
+};
+```
+
+The `String` belongs to the `User`.
+
+If you do:
+
+```rust
+let username = user.username;
+```
+
+you move the `String` out of the struct.
+
+After that, you can't use:
+
+```rust
+println!("{}", user.username);
+```
+
+because ownership has moved.
+
+This is a very important Rust concept.
+
+---
+
+# 8. Borrowing Struct Fields
+
+Instead of moving the field, you can borrow it:
+
+```rust
+let username = &user.username;
+```
+
+Then both remain usable:
+
+```rust
+println!("{}", username);
+println!("{}", user.username);
+```
+
+This is one reason understanding **ownership + borrowing + structs** together is important.
+
+---
+
+# 9. Struct Methods with `impl`
+
+Now we're getting into something very important.
+
+You can give a struct its own functions, called **methods**.
+
+Example:
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+}
+
+impl User {
+    fn introduce(&self) {
+        println!("Hello, my name is {}", self.username);
+    }
+}
+```
+
+Then:
+
+```rust
+fn main() {
+    let user = User {
+        id: 1,
+        username: String::from("daud"),
+    };
+
+    user.introduce();
+}
+```
+
+Output:
+
+```text
+Hello, my name is daud
+```
+
+The important syntax is:
+
+```rust
+impl User {
+    // methods
+}
+```
+
+---
+
+# 10. Understanding `&self`
+
+You'll see this everywhere in Rust.
+
+```rust
+fn introduce(&self)
+```
+
+`self` means:
+
+> "This particular instance of the struct."
+
+For example:
+
+```rust
+user.introduce();
+```
+
+Inside `introduce()`, `self` refers to `user`.
+
+So:
+
+```rust
+self.username
+```
+
+means:
+
+```text
+the username belonging to this User
+```
+
+---
+
+# 11. `&self`, `&mut self`, and `self`
+
+You'll encounter three common forms.
+
+### `&self`
+
+Borrow the struct without modifying it.
+
+```rust
+impl User {
+    fn get_username(&self) -> &String {
+        &self.username
+    }
+}
+```
+
+### `&mut self`
+
+Borrow the struct mutably so you can modify it.
+
+```rust
+impl User {
+    fn change_username(&mut self, new_name: String) {
+        self.username = new_name;
+    }
+}
+```
+
+Usage:
+
+```rust
+let mut user = User {
+    id: 1,
+    username: String::from("daud"),
+};
+
+user.change_username(String::from("admin"));
+
+println!("{}", user.username);
+```
+
+### `self`
+
+Takes ownership of the struct.
+
+```rust
+impl User {
+    fn consume(self) {
+        println!("User {} has been consumed", self.username);
+    }
+}
+```
+
+After calling:
+
+```rust
+user.consume();
+```
+
+you can't use `user` anymore because ownership was moved into the method.
+
+---
+
+# 12. Associated Functions
+
+A struct can also have functions that don't require an existing instance.
+
+These are called **associated functions**.
+
+The most common example is a constructor-like function:
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+    email: String,
+}
+
+impl User {
+    fn new(id: u32, username: String, email: String) -> User {
+        User {
+            id,
+            username,
+            email,
+        }
+    }
+}
+```
+
+Then:
+
+```rust
+let user = User::new(
+    1,
+    String::from("daud"),
+    String::from("daud@example.com"),
+);
+```
+
+Notice:
+
+```rust
+User::new(...)
+```
+
+rather than:
+
+```rust
+user.new(...)
+```
+
+That's because `new()` is an associated function, not a method.
+
+---
+
+# 13. Field Init Shorthand
+
+Look at:
+
+```rust
+fn new(id: u32, username: String, email: String) -> User {
+    User {
+        id: id,
+        username: username,
+        email: email,
+    }
+}
+```
+
+Rust lets you shorten this:
+
+```rust
+fn new(id: u32, username: String, email: String) -> User {
+    User {
+        id,
+        username,
+        email,
+    }
+}
+```
+
+Because the parameter names are the same as the struct fields.
+
+You'll see this constantly in real Rust projects.
+
+---
+
+# 14. Struct Update Syntax
+
+Suppose you have:
+
+```rust
+let user1 = User {
+    id: 1,
+    username: String::from("daud"),
+    email: String::from("daud@example.com"),
+};
+```
+
+You can create another struct using:
+
+```rust
+let user2 = User {
+    id: 2,
+    ..user1
+};
+```
+
+This means:
+
+> Use `user1`'s remaining fields.
+
+Be careful though: fields like `String` have ownership implications.
+
+---
+
+# 15. Tuple Structs
+
+Rust also has tuple structs.
+
+Example:
+
+```rust
+struct UserId(u32);
+```
+
+Create one:
+
+```rust
+let id = UserId(100);
+```
+
+Access the value:
+
+```rust
+println!("{}", id.0);
+```
+
+Another example:
+
+```rust
+struct Coordinates(f64, f64);
+
+let location = Coordinates(4.5, 7.2);
+
+println!("{}", location.0);
+println!("{}", location.1);
+```
+
+Tuple structs are useful when you want a distinct type but don't need named fields.
+
+For example:
+
+```rust
+struct UserId(u32);
+struct ProductId(u32);
+```
+
+Even though both contain a `u32`, they're different types.
+
+That's useful for preventing certain mistakes.
+
+---
+
+# 16. Unit-Like Structs
+
+You can also have:
+
+```rust
+struct Admin;
+```
+
+This struct contains no data.
+
+You'll encounter this less often as a beginner, but it becomes useful for certain Rust patterns such as marker types.
+
+Don't worry about mastering this yet.
+
+---
+
+# 17. Deriving Traits
+
+This is **very important for backend development**.
+
+Suppose you have:
+
+```rust
+struct User {
+    id: u32,
+    username: String,
+}
+```
+
+You might want to print it with `Debug`.
+
+You can derive the `Debug` trait:
+
+```rust
+#[derive(Debug)]
+struct User {
+    id: u32,
+    username: String,
+}
+```
+
+Then:
+
+```rust
+let user = User {
+    id: 1,
+    username: String::from("daud"),
+};
+
+println!("{:?}", user);
+```
+
+Output will look something like:
+
+```text
+User { id: 1, username: "daud" }
+```
+
+For easier-to-read output:
+
+```rust
+println!("{:#?}", user);
+```
+
+---
+
+# 18. Why `#[derive(Debug)]` Matters
+
+In backend development, you'll constantly need to inspect:
+
+- API requests
+- database records
+- application state
+- configuration
+- errors
+
+So you'll frequently see:
+
+```rust
+#[derive(Debug)]
+struct User {
+    ...
+}
+```
+
+---
+
+# 19. Structs + Serde = API JSON
+
+This is where structs become **extremely important for your backend journey**.
+
+Suppose your API receives:
+
+```json
+{
+  "username": "daud",
+  "email": "daud@example.com"
+}
+```
+
+You can represent that JSON as a Rust struct.
+
+```rust
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+struct CreateUserRequest {
+    username: String,
+    email: String,
+}
+```
+
+Serde can convert the incoming JSON into this struct.
+
+Conceptually:
+
+```text
+JSON
+ ↓
+Serde
+ ↓
+CreateUserRequest
+ ↓
+Rust application
+```
+
+This is one of the major reasons you need to become comfortable with structs before moving deeply into Axum.
+
+---
+
+# 20. Structs for API Responses
+
+You can also use structs for responses.
+
+```rust
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct UserResponse {
+    id: u32,
+    username: String,
+}
+```
+
+Rust can convert this into JSON:
+
+```json
+{
+  "id": 1,
+  "username": "daud"
+}
+```
+
+So in a real API, you might have:
+
+```rust
+#[derive(Serialize)]
+struct UserResponse {
+    id: u32,
+    username: String,
+    email: String,
+}
+```
+
+And:
+
+```rust
+#[derive(Deserialize)]
+struct CreateUserRequest {
+    username: String,
+    email: String,
+    password: String,
+}
+```
+
+Notice something important:
+
+**Your database model, request model, and response model don't necessarily need to be the same struct.**
+
+That's a very important backend design principle.
+
+---
+
+# 21. Structs + Database Models
+
+Later, with PostgreSQL and SQLx, you'll have something like:
+
+```rust
+#[derive(Debug, sqlx::FromRow)]
+struct User {
+    id: i32,
+    username: String,
+    email: String,
+}
+```
+
+SQLx can map a database row into this struct.
+
+Conceptually:
+
+```text
+PostgreSQL
+     ↓
+SQLx
+     ↓
+User struct
+     ↓
+Service
+     ↓
+API response
+```
+
+This is why structs are fundamental to your backend roadmap.
+
+---
+
+# 22. A Realistic Backend Example
+
+Eventually, you'll encounter code similar to:
+
+```rust
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize)]
+struct UserResponse {
+    id: i32,
+    username: String,
+    email: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct CreateUserRequest {
+    username: String,
+    email: String,
+    password: String,
+}
+```
+
+You should be able to look at that and immediately understand:
+
+### `UserResponse`
+
+```rust
+#[derive(Debug, Serialize)]
+```
+
+Means:
+
+- `Debug` → we can print/debug it
+- `Serialize` → convert it into JSON
+
+### `CreateUserRequest`
+
+```rust
+#[derive(Debug, Deserialize)]
+```
+
+Means:
+
+- `Debug` → we can inspect it
+- `Deserialize` → convert incoming JSON into the Rust struct
+
+This pattern will become second nature as you build APIs.
+
+---
+
+# 23. Structs with Nested Structs
+
+Structs can contain other structs.
+
+```rust
+struct Address {
+    city: String,
+    country: String,
+}
+
+struct User {
+    id: u32,
+    username: String,
+    address: Address,
+}
+```
+
+Create one:
+
+```rust
+let user = User {
+    id: 1,
+    username: String::from("daud"),
+    address: Address {
+        city: String::from("Port Harcourt"),
+        country: String::from("Nigeria"),
+    },
+};
+```
+
+Access it:
+
+```rust
+println!("{}", user.address.city);
+```
+
+This becomes useful when modeling complex API data.
+
+---
+
+# 24. A Practical Exercise
+
+For your Week 2 Rust learning, I recommend building this:
+
+## Student Management System
+
+Create:
+
+```rust
+struct Student {
+    id: u32,
+    name: String,
+    age: u8,
+    course: String,
+    score: f64,
+}
+```
+
+Then implement:
+
+```rust
+impl Student {
+    fn new(
+        id: u32,
+        name: String,
+        age: u8,
+        course: String,
+        score: f64,
+    ) -> Student {
+        Student {
+            id,
+            name,
+            age,
+            course,
+            score,
+        }
+    }
+
+    fn display(&self) {
+        println!("ID: {}", self.id);
+        println!("Name: {}", self.name);
+        println!("Age: {}", self.age);
+        println!("Course: {}", self.course);
+        println!("Score: {}", self.score);
+    }
+
+    fn is_passed(&self) -> bool {
+        self.score >= 50.0
+    }
+}
+```
+
+Then:
+
+```rust
+fn main() {
+    let student = Student::new(
+        1,
+        String::from("John"),
+        22,
+        String::from("Computer Science"),
+        75.5,
+    );
+
+    student.display();
+
+    println!("Passed: {}", student.is_passed());
+}
+```
+
+---
+
+# 25. What You Should Be Able to Do Before Moving On
+
+Don't just memorize the definition of a struct. By the end of this topic, you should be comfortable doing these without copying code:
+
+### Beginner level
+
+- [ ] Define a struct
+- [ ] Create a struct instance
+- [ ] Access fields
+- [ ] Modify fields
+- [ ] Make a struct mutable
+- [ ] Pass a struct to a function
+- [ ] Borrow a struct with `&`
+
+### Intermediate level
+
+- [ ] Create methods using `impl`
+- [ ] Understand `&self`
+- [ ] Understand `&mut self`
+- [ ] Understand `self`
+- [ ] Create associated functions such as `new()`
+- [ ] Use tuple structs
+- [ ] Understand struct ownership
+
+### Backend level
+
+- [ ] Derive `Debug`
+- [ ] Derive `Serialize`
+- [ ] Derive `Deserialize`
+- [ ] Understand request structs
+- [ ] Understand response structs
+- [ ] Understand database/model structs
+- [ ] Understand nested structs
+- [ ] Understand why different layers may use different structs
+
+---
+
+## The key idea to remember
+
+Think of a struct as a **blueprint for related data**.
+
+```text
+                 Rust Struct
+                     │
+        ┌────────────┼────────────┐
+        ↓            ↓            ↓
+      field        field        field
+        │            │            │
+       id          name         email
+```
+
+And as you progress into backend development:
+
+```text
+HTTP JSON
+   ↓
+Deserialize
+   ↓
+Request Struct
+   ↓
+Service
+   ↓
+Database
+   ↓
+Model Struct
+   ↓
+Response Struct
+   ↓
+Serialize
+   ↓
+HTTP JSON
+```
+
+**That pipeline is one of the most important things to understand about structs for your Rust backend journey.**

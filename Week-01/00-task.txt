@@ -35,3 +35,5 @@ Features:
 - Subtraction
 - Multiplication
 - Division
+
+Link: https://github.com/Chidiogoezeh/rust_calculator
