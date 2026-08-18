@@ -1077,4 +1077,4 @@ Serialize
 HTTP JSON
 ```
 
-**That pipeline is one of the most important things to understand about structs for your Rust backend journey.**
+**That pipeline is one of the most important things to understand about structs in Rust backend journey.**
