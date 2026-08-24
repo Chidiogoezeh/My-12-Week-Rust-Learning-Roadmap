@@ -27,3 +27,5 @@ Commands:
 - Add student
 - Delete student
 - List students
+
+Link to week 2 project: https://github.com/Chidiogoezeh/student_manager
