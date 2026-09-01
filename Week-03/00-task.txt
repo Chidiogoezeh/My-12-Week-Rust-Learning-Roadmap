@@ -29,3 +29,5 @@ Features:
 - Add expense
 - Delete expense
 - Calculate total
+
+Link: https://github.com/Chidiogoezeh/expense_tracker
