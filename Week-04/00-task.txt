@@ -24,4 +24,4 @@ services.rs
 
 ### Project
 
-Build a reusable CLI Todo application.
+Refactor week 3 project to be reusable rust package.

@@ -1,6 +1,6 @@
 # External Crates
 
-For your Rust backend goal, you don't need to learn everything about crates yet. You mainly need to understand **what external crates are, how to add them, and how to use them**.
+For now, we mainly need to understand **what external crates are, how to add them, and how to use them**.
 
 ---
 
