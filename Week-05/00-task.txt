@@ -19,8 +19,13 @@ async fn main() {
 
 ### Project
 
-Build a concurrent URL fetcher that:
+Instead of building a concurrent URL fetcher that:
 
 - Reads URLs
 - Fetches multiple pages simultaneously
 - Prints response times
+
+Let's build on our previous project expense tracker, such that expense tracker can,
+- Reads expense records, 
+- Processes multiple expenses concurrently using Tokio tasks, 
+- Calculates and displays expense summaries asynchronously.
