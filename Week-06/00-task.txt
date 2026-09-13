@@ -32,6 +32,8 @@ DELETE /users/:id
 
 ### Project
 
+Update the previously built cli project, to reusable API
+
 User API
 
 No database yet.
