@@ -32,3 +32,12 @@ Implement:
 - Read Todos
 - Update Todo
 - Delete Todo
+
+Or continue working on previous project expense_trcaker
+
+Implement:
+
+- Create expense
+- Read expense
+- Update expense
+- Delete expense
