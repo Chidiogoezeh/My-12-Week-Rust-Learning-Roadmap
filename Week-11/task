@@ -1,0 +1,69 @@
+# Week 11 – Expense Tracker
+
+## Project: Personal Finance App API
+
+Evolve the Expense Tracker into a secure personal finance app that helps users record income and expenses, organize spending, understand their financial habits, and eventually reconcile transactions imported from supported financial providers.
+
+### Features
+
+#### Authentication
+
+- User registration
+- User login
+- JWT authentication
+
+#### Users
+
+- View profile
+- Update profile
+
+#### Transactions
+
+- Create income and expense records
+- View transaction history
+- Update transactions
+- Delete transactions
+- Categorize transactions
+- Calculate total income and expenses
+- View spending summaries by category
+
+#### Budgets
+
+- Create monthly budgets
+- Update and delete budgets
+- Track spending against budget limits
+
+### Database
+
+- PostgreSQL
+- SQLx
+- Database migrations
+
+### Security
+
+- Password hashing with Argon2
+- JWT authentication
+- Request validation
+- User data ownership checks
+- Secure environment configuration
+
+### Logging and Error Handling
+
+- Structured logging using `tracing`
+- HTTP request logging
+- Consistent error responses
+- Database error handling
+
+### Testing
+
+- Unit tests
+- API integration tests
+- Authentication tests
+- Transaction ownership and validation tests
+
+### Future Improvements
+
+- Financial provider integrations
+- Automated transaction imports
+- Transaction reconciliation
+- Docker and Kubernetes deployment

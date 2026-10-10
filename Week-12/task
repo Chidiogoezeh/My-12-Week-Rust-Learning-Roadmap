@@ -1,42 +1,105 @@
-# Week 12 – Final Production Project
+# Week 12 – Containerization and Deployment
 
-Build a complete **Task Management API**.
+## Docker
 
-Features:
-
-### Authentication
-
-- Register
-- Login
-- JWT
-
-### Users
-
-- Profile
-- Update profile
+Learn how to package the Rust backend into a Docker container.
 
 ### Tasks
 
-- Create
-- Update
-- Delete
-- Complete
-- Due date
+- Create a Dockerfile.
+- Build a Docker image.
+- Run the backend inside a container.
+- Configure environment variables.
+- Use a multi-stage build to reduce image size.
 
-### Database
+### Example Dockerfile
 
-PostgreSQL
+```dockerfile
+FROM rust:latest AS builder
 
-### Security
+WORKDIR /app
 
-- Password hashing
-- JWT authentication
-- Validation
+COPY . .
 
-### Logging
+RUN cargo build --release
 
-Using `tracing`
+FROM debian:bookworm-slim
 
-### Deployment
+WORKDIR /app
 
-Deploy to a cloud platform like Fly.io, Railway, or Render.
+COPY --from=builder /app/target/release/expense_tracker /app/expense_tracker
+
+CMD ["/app/expense_tracker"]
+```
+
+Note: This is a starting example. Production builds may need additional system libraries and TLS certificates, depending on your dependencies.
+
+## Docker Compose
+
+Learn how to run multiple services together.
+
+### Tasks
+
+- Create a `compose.yaml` file.
+- Run the backend and PostgreSQL in separate containers.
+- Configure database environment variables.
+- Set up persistent storage for PostgreSQL.
+- Run database migrations.
+- Connect the backend to the database.
+
+### Example compose.yaml
+
+```yaml
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/expense_tracker
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: expense_tracker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+```
+
+Note: Use a `.env` file for local development, keep it out of Git, and replace example credentials with secure secrets before deployment. Configure database readiness and migrations properly.
+
+## Project
+
+**Dockerize the Personal Finance App API.**
+
+- Build and run the Rust backend in Docker.
+- Run PostgreSQL using Docker Compose.
+- Apply database migrations.
+- Test registration, login, and transaction endpoints.
+- Verify that financial records persist after containers restart.
+
+## Deployment
+
+Deploy the backend to a cloud platform such as Fly.io, Railway, or Render.
+
+### Tasks
+
+- Configure production environment variables.
+- Provision a managed PostgreSQL database.
+- Run database migrations.
+- Deploy the API.
+- Test the deployed endpoints.
+- Configure HTTPS and production logging.
+- Verify database connectivity and application health.
+
+## Final Goal
+
+Deploy a containerized Rust personal finance API that uses PostgreSQL, supports authentication and financial transactions, and is accessible through a production API URL.
