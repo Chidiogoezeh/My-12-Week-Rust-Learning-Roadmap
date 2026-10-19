@@ -67,3 +67,9 @@ Evolve the Expense Tracker into a secure personal finance app that helps users r
 - Automated transaction imports
 - Transaction reconciliation
 - Docker and Kubernetes deployment
+- openapi documentation
+- create the docker configuration
+- add health checks and startup reliability
+- test the complete docker workflow
+- add CI with github actions
+- deployed to a test environment

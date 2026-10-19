@@ -1,105 +1,195 @@
-# Week 12 – Containerization and Deployment
+# Week 12 — Containerization, CI, API Documentation, and Deployment
 
-## Docker
+**Objective:** Prepare the Personal Finance API for reliable local execution, automated testing, and deployment to a test environment.
 
-Learn how to package the Rust backend into a Docker container.
+## 1. Docker Configuration
 
 ### Tasks
 
-- Create a Dockerfile.
-- Build a Docker image.
-- Run the backend inside a container.
-- Configure environment variables.
-- Use a multi-stage build to reduce image size.
+- Create a `Dockerfile` using a multi-stage build.
+- Create a `.dockerignore` file.
+- Build and run the Rust backend inside a Docker container.
+- Configure environment variables securely.
+- Ensure the application listens on the appropriate network interface inside the container.
 
-### Example Dockerfile
+**Deliverable:** The Rust API builds and runs inside a Docker container.
 
-```dockerfile
-FROM rust:latest AS builder
-
-WORKDIR /app
-
-COPY . .
-
-RUN cargo build --release
-
-FROM debian:bookworm-slim
-
-WORKDIR /app
-
-COPY --from=builder /app/target/release/expense_tracker /app/expense_tracker
-
-CMD ["/app/expense_tracker"]
-```
-
-Note: This is a starting example. Production builds may need additional system libraries and TLS certificates, depending on your dependencies.
-
-## Docker Compose
-
-Learn how to run multiple services together.
+## 2. Docker Compose and PostgreSQL
 
 ### Tasks
 
 - Create a `compose.yaml` file.
-- Run the backend and PostgreSQL in separate containers.
-- Configure database environment variables.
-- Set up persistent storage for PostgreSQL.
-- Run database migrations.
-- Connect the backend to the database.
+- Run the API and PostgreSQL in separate containers.
+- Configure database connectivity and persistent PostgreSQL storage.
+- Apply database migrations reliably.
+- Configure service dependencies and database readiness.
+- Document the command for starting and stopping the application.
 
-### Example compose.yaml
+**Deliverable:** The API and PostgreSQL run together locally using Docker Compose.
 
-```yaml
-services:
-  api:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://postgres:password@postgres:5432/expense_tracker
-      JWT_SECRET: ${JWT_SECRET}
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: expense_tracker
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
-```
-
-Note: Use a `.env` file for local development, keep it out of Git, and replace example credentials with secure secrets before deployment. Configure database readiness and migrations properly.
-
-## Project
-
-**Dockerize the Personal Finance App API.**
-
-- Build and run the Rust backend in Docker.
-- Run PostgreSQL using Docker Compose.
-- Apply database migrations.
-- Test registration, login, and transaction endpoints.
-- Verify that financial records persist after containers restart.
-
-## Deployment
-
-Deploy the backend to a cloud platform such as Fly.io, Railway, or Render.
+## 3. Health Checks and Startup Reliability
 
 ### Tasks
 
-- Configure production environment variables.
-- Provision a managed PostgreSQL database.
+- Add a `/health` endpoint.
+- Verify database readiness before the application accepts normal requests.
+- Configure container health checks.
+- Handle startup failures and graceful shutdown.
+- Verify that financial data persists after container restarts.
+
+**Deliverable:** The application starts reliably, reports its health, and preserves stored data.
+
+## 4. End-to-End Testing
+
+### Tasks
+
+- Start the application using Docker Compose.
+- Test registration, login, and authenticated requests.
+- Test transaction creation, listing, updating, and deletion.
+- Test budgets, dashboard summaries, and spending reports.
+- Verify user data isolation and validation.
+- Test database migrations, persistence, and container restarts.
+- Inspect application logs for errors and sensitive data leaks.
+
+**Deliverable:** A repeatable test process verifies the core API workflows.
+
+## 5. GitHub Actions CI
+
+### Tasks
+
+- Create a GitHub Actions workflow.
+- Run `cargo fmt --check`.
+- Run Clippy and automated tests.
+- Build the application in release mode.
+- Build the Docker image if time permits.
+- Fix failures before merging changes.
+
+**Deliverable:** Code changes are checked automatically through GitHub Actions.
+
+## 6. OpenAPI Documentation
+
+### Tasks
+
+- Generate OpenAPI documentation for the core API endpoints.
+- Document request bodies, responses, authentication, validation, and errors.
+- Add Swagger UI for interactive API testing if time permits.
+- Update the README with setup instructions, environment variables, migrations, testing, and API usage.
+
+**Deliverable:** The API has usable documentation and reproducible setup instructions.
+
+## 7. Deploy to a Test Environment
+
+### Tasks
+
+- Choose one cloud platform, such as Render, Railway, or Fly.io.
+- Provision PostgreSQL.
+- Configure environment variables and secrets securely.
 - Run database migrations.
-- Deploy the API.
-- Test the deployed endpoints.
-- Configure HTTPS and production logging.
-- Verify database connectivity and application health.
+- Deploy the API with HTTPS.
+- Test authentication, transactions, budgets, reports, and health checks.
+- Verify application logs and database persistence.
+- Document the deployment process and available backup procedures.
 
-## Final Goal
+**Deliverable:** A working test-environment URL and deployment instructions.
 
-Deploy a containerized Rust personal finance API that uses PostgreSQL, supports authentication and financial transactions, and is accessible through a production API URL.
+## Week 12 Final Goal
+
+By the end of the week, the Personal Finance API should:
+
+- Run locally using Docker Compose with PostgreSQL.
+- Apply database migrations and preserve financial data across restarts.
+- Pass automated checks through GitHub Actions.
+- Provide documented, authenticated financial endpoints.
+- Include basic health checks and appropriate error handling.
+- Be deployed to a test environment with HTTPS.
+- Have a README explaining setup, testing, API usage, and deployment.
+
+**Scope rule:** Prioritize a correct, tested, and deployed API over adding new features. Docker Compose is sufficient for local development; Kubernetes and financial provider integrations are not required to complete Week 12.
+
+---
+
+# Future Development — Financial Integrations and Kubernetes
+
+These are extensions to undertake after completing the 12-week programme and successfully deploying the core API.
+
+## Phase 1. Mock Financial Provider Integration
+
+**Objective:** Establish a clean foundation for future financial provider integrations without connecting to real providers yet.
+
+### Tasks
+
+- Define a provider-neutral adapter interface.
+- Implement a mock adapter that returns sample financial transactions.
+- Keep provider-specific code separate from core transaction logic.
+- Validate imported data before storing it in PostgreSQL.
+- Add tests for valid and invalid provider responses.
+
+**Deliverable:** A tested mock integration that demonstrates how future providers can connect to the application.
+
+## Phase 2. Transaction Imports and Duplicate Prevention
+
+**Objective:** Import transactions safely and prevent repeated imports from creating duplicate records.
+
+### Tasks
+
+- Store external provider references alongside imported transactions.
+- Add database constraints and indexes to enforce import uniqueness.
+- Implement repeatable, idempotent imports.
+- Handle invalid records and partial import failures.
+- Test repeated imports and conflicting provider references.
+
+**Deliverable:** An import workflow that can safely process the same sample data more than once.
+
+## Phase 3. Transaction Reconciliation
+
+**Objective:** Compare imported transactions with existing financial records.
+
+### Tasks
+
+- Define matching criteria using provider references and appropriate transaction attributes.
+- Identify matched, unmatched, and potentially duplicated transactions.
+- Record reconciliation outcomes and their status.
+- Handle ambiguous matches without automatically merging unrelated transactions.
+- Test reconciliation using realistic sample data.
+
+**Deliverable:** A tested reconciliation workflow with traceable results.
+
+## Phase 4. Real Financial Provider Integrations
+
+**Objective:** Add actual provider connections only when API access, documentation, and authorization are available.
+
+### Tasks
+
+- Evaluate the relevant provider APIs, such as Mono, OPay, Moniepoint, Nomba, Kuda, or PalmPay.
+- Select one provider for the first integration.
+- Implement its adapter without coupling provider-specific details to the core transaction service.
+- Secure credentials and validate provider responses.
+- Handle timeouts, retries, webhook verification where applicable, and provider failures.
+- Test the integration in a sandbox before considering production use.
+
+**Deliverable:** One tested provider integration with documented limitations and failure-handling behavior.
+
+## Phase 5. Introductory Kubernetes Deployment
+
+**Objective:** Learn how to deploy and operate the API using basic Kubernetes resources.
+
+### Tasks
+
+- Learn Pods, Deployments, Services, ConfigMaps, and Secrets.
+- Create Deployment and Service manifests.
+- Configure readiness and liveness probes.
+- Configure resource requests and limits.
+- Connect the API to PostgreSQL in a test environment.
+- Verify configuration, connectivity, restarts, and application health.
+
+**Deliverable:** A working test deployment that demonstrates basic Kubernetes operations.
+
+## Future Development Principles
+
+- Complete and deploy the core application before expanding its scope.
+- Implement one financial provider at a time.
+- Preserve user ownership checks, transaction integrity, and data isolation.
+- Enforce duplicate prevention at the database level, not only in application code.
+- Keep provider integrations separate from core financial logic.
+- Introduce additional infrastructure only when it solves a demonstrated problem.
+- Maintain automated tests, documentation, and a working deployment as the application evolves.
